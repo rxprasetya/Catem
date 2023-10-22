@@ -1,13 +1,23 @@
-import React from 'react'
-import { Dimensions, ScrollView, StyleSheet, TextInput, View, StatusBar, Text, Image} from 'react-native'
+import React, { useState } from 'react'
+import { Dimensions, ScrollView, StyleSheet, TextInput, View, StatusBar, Text, Image, TouchableOpacity} from 'react-native'
 import { SearchNormal1, ShoppingCart, Location, BoxTime, DiscountShape, DiscountCircle, Car, Bookmark, More, MenuBoard, Add, Lovely } from 'iconsax-react-native';
 import logo from './src/assets/images/image.png'
+
 const win = Dimensions.get('window')
 
+const Status = () => {
+  return (
+    <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'}></StatusBar>
+  )
+}
+
 export default function App() {
+
+  const [choose, setChoose] = useState(1)
+
   return (
     <ScrollView style={ styles.container }>
-      <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'}></StatusBar>
+      <Status />
       <View style={ styles.header }></View>
       <Image style={ styles.logoHeader } source={ logo }/>
       <View style={ styles.searchContainer }>
@@ -15,54 +25,54 @@ export default function App() {
         <TextInput style={ styles.search } placeholder='What shall we deliver?' placeholderTextColor={'grey'}></TextInput>
       </View>
       <View style={ styles.categoryContainer }>
-        <View style={ styles.categoryContainer2 }>
-          <ShoppingCart size={16} variant='Linear' color='black' />
-          <Text style={ styles.category }>Delivery</Text>
-        </View>
-        <View style={ styles.categoryContainer2 }>
-          <DiscountShape size={16} variant='Linear' color='black' />
-          <Text style={ styles.category }>Dine-In</Text>
-        </View>
-        <View style={ styles.categoryContainer2 }>
-          <Car size={16} variant='Linear' color='black' />
-          <Text style={ styles.category }>Self Pick-Up</Text>
-        </View>
+        <TouchableOpacity style={[ styles.categoryContainer2,{ backgroundColor: choose == 1 ? '#e8fee4' : '#f3f3f3' }]} onPress={()=> setChoose(1)}>
+          <ShoppingCart size={16} variant='Linear' color={ choose == 1 ? '#005D17' : 'black' } />
+          <Text style={[ styles.category, { fontWeight: choose == 1 ? '600' : 'normal', color : choose == 1 ? '#005D17' : 'black' }]}>Delivery</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[ styles.categoryContainer2, { backgroundColor: choose == 2 ? '#e8fee4' : '#f3f3f3' }]} onPress={()=> setChoose(2)}>
+          <DiscountShape size={16} variant='Linear' color={ choose == 2 ? '#005D17' : 'black' } />
+          <Text style={[ styles.category, { fontWeight: choose == 2 ? '600' : 'normal', color : choose == 2 ? '#005D17' : 'black' }]}>Dine-In</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[ styles.categoryContainer2, { backgroundColor: choose == 3 ? '#e8fee4' : '#f3f3f3' }]} onPress={()=> setChoose(3)}>
+          <Car size={16} variant='Linear' color={ choose == 3 ? '#005D17' : 'black' } />
+          <Text style={[ styles.category, { fontWeight: choose == 3 ? '600' : 'normal', color : choose == 3 ? '#005D17' : 'black' }]}>Self Pick-Up</Text>
+        </TouchableOpacity>
       </View>
       <View style={ styles.fiturContainer }>
-        <View style={ styles.fiturContainer2 }>
+        <TouchableOpacity style={ styles.fiturContainer2 }>
           <Location size={54} variant='Linear' color='black' />
           <Text style={ styles.fiturText }>Location</Text>
-        </View>
-        <View style={ styles.fiturContainer2 }>
+        </TouchableOpacity>
+        <TouchableOpacity style={ styles.fiturContainer2 }>
           <BoxTime size={54} variant='Linear' color='black' />
           <Text style={ styles.fiturText }>Dinner Time</Text>
-        </View>
-        <View style={ styles.fiturContainer2 }>
+        </TouchableOpacity>
+        <TouchableOpacity style={ styles.fiturContainer2 }>
           <Bookmark size={54} variant='Linear' color='black' />
           <Text style={ styles.fiturText }>Best Rating</Text>
-        </View>
-        <View style={ styles.fiturContainer2 }>
+        </TouchableOpacity>
+        <TouchableOpacity style={ styles.fiturContainer2 }>
           <DiscountCircle size={54} variant='Linear' color='black' />
           <Text style={ styles.fiturText }>Discount</Text>
-        </View>
+        </TouchableOpacity>
       </View>
       <View style={ styles.fiturContainer }>
-        <View style={ styles.fiturContainer2 }>
+        <TouchableOpacity style={ styles.fiturContainer2 }>
           <MenuBoard size={50} variant='Linear' color='black' />
           <Text style={ styles.fiturText }>Menu</Text>
-        </View>
-        <View style={ styles.fiturContainer2 }>
+        </TouchableOpacity>
+        <TouchableOpacity style={ styles.fiturContainer2 }>
           <Lovely size={50} variant='Linear' color='black' />
-          <Text style={ styles.fiturText }>Wish List</Text>
-        </View>
-        <View style={ styles.fiturContainer2 }>
+          <Text style={ styles.fiturText }>Favorite</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={ styles.fiturContainer2 }>
           <Add size={50} variant='Linear' color='black' />
           <Text style={ styles.fiturText }>Add Menu</Text>
-        </View>
-        <View style={ styles.fiturContainer2 }>
+        </TouchableOpacity>
+        <TouchableOpacity style={ styles.fiturContainer2 }>
           <More size={50} variant='Linear' color='black' />
           <Text style={ styles.fiturText }>More</Text>
-        </View>
+        </TouchableOpacity>
       </View>
       <ScrollView horizontal style={ styles.iklanContainer }>
         <View style={ styles.iklanContainer2 }>
@@ -121,7 +131,7 @@ const styles = StyleSheet.create({
 
   search: {
     marginHorizontal: 8,
-    color: 'grey',
+    color: 'black',
     width: win.width-112,
   },
 
@@ -137,13 +147,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#f3f3f3',
     borderRadius: 16,
-    padding: 6,
+    padding: 8,
     marginHorizontal: 4,
   },
   
   category: {
     marginHorizontal: 4,
     color: 'black',
+    fontSize: 12,
+  },
+
+  categoryTouch: {
+    marginHorizontal: 4,
+    color: '#00AA13',
     fontSize: 12,
   },
 
@@ -168,7 +184,6 @@ const styles = StyleSheet.create({
   iklanContainer: {
     marginTop: 16,
     height:300,
-    // backgroundColor: 'pink',
     marginHorizontal: 8,
   },
 
