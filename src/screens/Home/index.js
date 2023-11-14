@@ -1,31 +1,29 @@
 // Home
 import React, { useState } from 'react'
-import { Dimensions, ScrollView, StyleSheet, TextInput, View, StatusBar, Text, Image, TouchableOpacity, LogBox } from 'react-native'
+import { Dimensions, ScrollView, StyleSheet, View, StatusBar, Text, Image, TouchableOpacity, LogBox, TouchableHighlight } from 'react-native'
 import { SearchNormal1, ShoppingCart, Location, BoxTime, DiscountShape, DiscountCircle, Car, Bookmark, More, MenuBoard, Add, Lovely } from 'iconsax-react-native'
 import logo from '../../assets/images/image.png'
+import { useNavigation } from '@react-navigation/native'
 
 const win = Dimensions.get('window')
 
 LogBox.ignoreAllLogs(true)
 
-const Status = () => {
-  return (
-    <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
-  )
-}
-
 export default function Home() {
 
   const [choose, setChoose] = useState(1)
+  const navigation = useNavigation()
 
   return (
       <ScrollView style={ styles.container }>
-        <Status />
+        <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
         <View style={ styles.header }></View>
         <Image style={ styles.logoHeader } source={ logo }/>
-        <View style={ styles.searchContainer }>
+        <View>
+        <TouchableOpacity style={ styles.searchContainer } onPress={()=> {navigation.navigate('Discover')}}>
           <SearchNormal1 variant='Linear' color='grey' style={{ marginLeft: 12, }} />
-          <TextInput style={ styles.search } placeholder='What shall we deliver?' placeholderTextColor={'grey'}></TextInput>
+          <Text style={ styles.search }> What shall we deliver? </Text>
+        </TouchableOpacity>
         </View>
         <View style={ styles.categoryContainer }>
           <TouchableOpacity style={[ styles.categoryContainer2,{ backgroundColor: choose == 1 ? '#e8fee4' : '#f3f3f3' }]} onPress={()=> setChoose(1)}>
@@ -134,7 +132,7 @@ const styles = StyleSheet.create({
 
   search: {
     marginHorizontal: 8,
-    color: 'black',
+    color: 'grey',
     width: win.width-112,
   },
 
