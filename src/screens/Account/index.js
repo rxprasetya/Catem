@@ -1,10 +1,12 @@
 // Account
 import React from "react"
 import { View, Text, Image, ScrollView, StyleSheet, StatusBar, TouchableOpacity, } from 'react-native'
-import { DollarCircle, Coin, Personalcard, Heart, Lock, Message,  } from 'iconsax-react-native'
+import { DollarCircle, Coin, Personalcard, Heart, Lock, Message, MenuBoard,  } from 'iconsax-react-native'
 import profile from '../../assets/images/IMG_9865.jpg'
+import { useNavigation } from "@react-navigation/native"
 
 export default function Account(){
+  const nav = useNavigation()
   return(
     <ScrollView style={ styles.container }>
       <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'}></StatusBar>
@@ -52,6 +54,12 @@ export default function Account(){
           <View style={ styles.menuInfo }>
             <Heart size={20} variant='Linear' color='black'/>
             <Text style={ styles.menuText }>Favorites</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={ styles.menuContent } onPress={()=> nav.navigate('AddMenu')}>
+          <View style={ styles.menuInfo }>
+            <MenuBoard size={20} variant='Linear' color='black'/>
+            <Text style={ styles.menuText }>Add Menu</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={ styles.menuContent }>
