@@ -1,12 +1,16 @@
 // Discover
-import React, { useRef } from 'react'
-import { StyleSheet, TextInput, View, StatusBar, Text, TouchableOpacity, ScrollView, Image, Animated } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
+import { StyleSheet, TextInput, View, StatusBar, Text, TouchableOpacity, ScrollView, Image, Animated, FlatList } from 'react-native'
 import { SearchNormal1, ArrowLeft2, Location, Star1 } from 'iconsax-react-native'
-import { useNavigation } from '@react-navigation/native'
+import {  useNavigation, } from '@react-navigation/native'
 
 export default function Discover() {
+
   const navigation = useNavigation()
+  const [count, setCount] = useState(0)
+
   const ScrollY = useRef(new Animated.Value(0)).current
+  const [menuData, setMenuData] = useState([])
   const DiffClampY = Animated.diffClamp(ScrollY, 0, 192)
   const HeaderY = DiffClampY.interpolate({
     inputRange: [0, 142],
@@ -16,6 +20,45 @@ export default function Discover() {
     inputRange: [0, 128],
     outputRange: [0, -72]
   })
+
+  useEffect(() => {
+    fetchData()
+    // Ketika beranjak ke layar selanjutnya
+    // return () => {
+    //   fetchData()
+    // }
+  }, [count])
+
+  // Tampil Data
+  async function fetchData() {
+    try {
+      const data = await fetch('https://656f45af6529ec1c6237aa2a.mockapi.io/catem/menu/')
+      const res = await data.json()
+      console.log(res);
+      setMenuData(res)
+      setCount(count+1)
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function deleteData(id) {
+    try {
+      const data = await fetch('https://656f45af6529ec1c6237aa2a.mockapi.io/catem/menu/' + id, {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-type': 'application/json',
+        },
+      })
+      // setCount(count+1)
+      console.log(await data.json())
+      // console.log({id})
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   return (
     <View style={styles.container}>
       <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'}></StatusBar>
@@ -55,268 +98,23 @@ export default function Discover() {
                 useNativeDriver: true
               },
             )}
-          contentContainerStyle={{ paddingBottom: 40 }}
-          >
+          contentContainerStyle={{ paddingBottom: 64 }}
+        >
           <View style={styles.recContentContainer}>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Zm9vZCUyMGFuZCUyMGRyaW5rfGVufDB8fDB8fHww' }} />
-              <Text style={styles.recTitle}>Mie Setang</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://images.unsplash.com/photo-1611250188496-e966043a0629?auto=format&fit=crop&q=80&w=1450&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' }} />
-              <Text style={styles.recTitle}>Salad Tortilla</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://asset.kompas.com/crops/fg4dcsuOwno9i-8N4jHx-X0oo5g=/0x0:1000x667/1200x800/data/photo/2023/06/28/649b17cabdb74.jpg' }} />
-              <Text style={styles.recTitle}>Burger Bangor</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.recContentContainer}>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Zm9vZCUyMGFuZCUyMGRyaW5rfGVufDB8fDB8fHww' }} />
-              <Text style={styles.recTitle}>Mie Setang</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://images.unsplash.com/photo-1611250188496-e966043a0629?auto=format&fit=crop&q=80&w=1450&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' }} />
-              <Text style={styles.recTitle}>Salad Tortilla</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://asset.kompas.com/crops/fg4dcsuOwno9i-8N4jHx-X0oo5g=/0x0:1000x667/1200x800/data/photo/2023/06/28/649b17cabdb74.jpg' }} />
-              <Text style={styles.recTitle}>Burger Bangor</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.recContentContainer}>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Zm9vZCUyMGFuZCUyMGRyaW5rfGVufDB8fDB8fHww' }} />
-              <Text style={styles.recTitle}>Mie Setang</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://images.unsplash.com/photo-1611250188496-e966043a0629?auto=format&fit=crop&q=80&w=1450&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' }} />
-              <Text style={styles.recTitle}>Salad Tortilla</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://asset.kompas.com/crops/fg4dcsuOwno9i-8N4jHx-X0oo5g=/0x0:1000x667/1200x800/data/photo/2023/06/28/649b17cabdb74.jpg' }} />
-              <Text style={styles.recTitle}>Burger Bangor</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.recContentContainer}>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Zm9vZCUyMGFuZCUyMGRyaW5rfGVufDB8fDB8fHww' }} />
-              <Text style={styles.recTitle}>Mie Setang</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://images.unsplash.com/photo-1611250188496-e966043a0629?auto=format&fit=crop&q=80&w=1450&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' }} />
-              <Text style={styles.recTitle}>Salad Tortilla</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://asset.kompas.com/crops/fg4dcsuOwno9i-8N4jHx-X0oo5g=/0x0:1000x667/1200x800/data/photo/2023/06/28/649b17cabdb74.jpg' }} />
-              <Text style={styles.recTitle}>Burger Bangor</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.recContentContainer}>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Zm9vZCUyMGFuZCUyMGRyaW5rfGVufDB8fDB8fHww' }} />
-              <Text style={styles.recTitle}>Mie Setang</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://images.unsplash.com/photo-1611250188496-e966043a0629?auto=format&fit=crop&q=80&w=1450&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' }} />
-              <Text style={styles.recTitle}>Salad Tortilla</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://asset.kompas.com/crops/fg4dcsuOwno9i-8N4jHx-X0oo5g=/0x0:1000x667/1200x800/data/photo/2023/06/28/649b17cabdb74.jpg' }} />
-              <Text style={styles.recTitle}>Burger Bangor</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.recContentContainer}>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Zm9vZCUyMGFuZCUyMGRyaW5rfGVufDB8fDB8fHww' }} />
-              <Text style={styles.recTitle}>Mie Setang</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://images.unsplash.com/photo-1611250188496-e966043a0629?auto=format&fit=crop&q=80&w=1450&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' }} />
-              <Text style={styles.recTitle}>Salad Tortilla</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://asset.kompas.com/crops/fg4dcsuOwno9i-8N4jHx-X0oo5g=/0x0:1000x667/1200x800/data/photo/2023/06/28/649b17cabdb74.jpg' }} />
-              <Text style={styles.recTitle}>Burger Bangor</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.recContentContainer}>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Zm9vZCUyMGFuZCUyMGRyaW5rfGVufDB8fDB8fHww' }} />
-              <Text style={styles.recTitle}>Mie Setang</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://images.unsplash.com/photo-1611250188496-e966043a0629?auto=format&fit=crop&q=80&w=1450&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' }} />
-              <Text style={styles.recTitle}>Salad Tortilla</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://asset.kompas.com/crops/fg4dcsuOwno9i-8N4jHx-X0oo5g=/0x0:1000x667/1200x800/data/photo/2023/06/28/649b17cabdb74.jpg' }} />
-              <Text style={styles.recTitle}>Burger Bangor</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.recContentContainer}>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Zm9vZCUyMGFuZCUyMGRyaW5rfGVufDB8fDB8fHww' }} />
-              <Text style={styles.recTitle}>Mie Setang</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://images.unsplash.com/photo-1611250188496-e966043a0629?auto=format&fit=crop&q=80&w=1450&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' }} />
-              <Text style={styles.recTitle}>Salad Tortilla</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://asset.kompas.com/crops/fg4dcsuOwno9i-8N4jHx-X0oo5g=/0x0:1000x667/1200x800/data/photo/2023/06/28/649b17cabdb74.jpg' }} />
-              <Text style={styles.recTitle}>Burger Bangor</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.recContentContainer}>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Zm9vZCUyMGFuZCUyMGRyaW5rfGVufDB8fDB8fHww' }} />
-              <Text style={styles.recTitle}>Mie Setang</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://images.unsplash.com/photo-1611250188496-e966043a0629?auto=format&fit=crop&q=80&w=1450&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' }} />
-              <Text style={styles.recTitle}>Salad Tortilla</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
-            <View style={styles.recContent}>
-              <Image style={styles.recImage} source={{ uri: 'https://asset.kompas.com/crops/fg4dcsuOwno9i-8N4jHx-X0oo5g=/0x0:1000x667/1200x800/data/photo/2023/06/28/649b17cabdb74.jpg' }} />
-              <Text style={styles.recTitle}>Burger Bangor</Text>
-              <View style={styles.recRating}>
-                <Text style={styles.recRatingText}>Rp40.000</Text>
-                <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
-                <Text style={styles.recRatingText}>5.0</Text>
-              </View>
-            </View>
+            {menuData.map((item) => (
+              <TouchableOpacity style={styles.recContent} onPress={() =>
+                navigation.navigate('EditMenu', { data: item })} 
+                onLongPress={()=>deleteData(item.id)}
+                >
+                <Image style={styles.recImage} source={{ uri: item.image }} />
+                <Text style={styles.recTitle}>{item.title}</Text>
+                <View style={styles.recRating}>
+                  <Text style={styles.recRatingText}>Rp{item.price}</Text>
+                  <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
+                  <Text style={styles.recRatingText}>5.0</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
           </View>
         </Animated.ScrollView>
       </Animated.View>
@@ -395,7 +193,7 @@ const styles = StyleSheet.create({
 
   recContentContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexWrap: 'wrap',
   },
 
   recContent: {

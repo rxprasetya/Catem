@@ -12,7 +12,6 @@ LogBox.ignoreAllLogs(true)
 export default function Home() {
 
   const [choose, setChoose] = useState(1)
-  const [move, setMove] = useState(0)
   const navigation = useNavigation()
 
   return (
@@ -20,7 +19,7 @@ export default function Home() {
       <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
       <View style={styles.header}></View>
       <Image style={styles.logoHeader} source={logo} />
-      <TouchableOpacity style={styles.searchContainer} onPress={() => { navigation.navigate('Discover'), setMove(move + 1) }}>
+      <TouchableOpacity style={styles.searchContainer} onPress={() => { navigation.navigate('Discover') }}>
         <SearchNormal1 variant='Linear' color='grey' style={{ marginLeft: 12, }} />
         <Text style={styles.search}> What shall we deliver? </Text>
       </TouchableOpacity>

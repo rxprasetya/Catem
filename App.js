@@ -1,7 +1,7 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
-import {Account, AddMenu, Discover} from './src/screens';
+import {Account, AddMenu, Detail, Discover, EditMenu} from './src/screens';
 import Home from './src/screens/Home';
 import {Home3, User} from 'iconsax-react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -69,8 +69,18 @@ export default function App() {
         />
         <Stack.Screen
           options={{headerShown: false}}
+          name="Detail"
+          component={Detail}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
           name="AddMenu"
           component={AddMenu}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="EditMenu"
+          component={EditMenu}
         />
       </Stack.Navigator>
     </NavigationContainer>
