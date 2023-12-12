@@ -69,11 +69,6 @@ export default function App() {
         />
         <Stack.Screen
           options={{headerShown: false}}
-          name="Detail"
-          component={Detail}
-        />
-        <Stack.Screen
-          options={{headerShown: false}}
           name="AddMenu"
           component={AddMenu}
         />

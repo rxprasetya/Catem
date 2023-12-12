@@ -2,6 +2,8 @@ import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View } from 
 import React, { useState } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { ArrowLeft } from 'iconsax-react-native'
+import storage from '@react-native-firebase/storage'
+import firestore from '@react-native-firebase/firestore'
 
 const winWidht = Dimensions.get('screen').width
 const winHeight = Dimensions.get('screen').height
@@ -20,23 +22,35 @@ export default function EditMenu() {
     // Edit Data
     async function fecthPut() {
         try {
-            var id = route.params?.data.id
-            const data = await fetch('https://656f45af6529ec1c6237aa2a.mockapi.io/catem/menu/' + id, {
-                method: 'PUT',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify({
-                    title: inputTitle,
-                    price: parseInt(inputPrice),
-                    desc: inputDesc,
-                    image: inputImage,
-                    createdAt: 'zxczxczxc',
-                })
+            var id = route.params?.id
+            const data = await firestore().collection('menu').doc(id).update({
+                title: inputTitle,
+                price: parseInt(inputPrice),
+                image: inputImage,
+                desc: inputDesc,
             })
-            console.log(await data.json())
+            
+            console.log(data)
+            // console.log(id)
             nav.navigate('Discover')
+
+            // nav.navigate('Discover', { isLoading: Math.random() })
+
+            // const data = await fetch('https://656f45af6529ec1c6237aa2a.mockapi.io/catem/menu/' + id, {
+            //     method: 'PUT',
+            //     headers: {
+            //         'Accept': 'application/json',
+            //         'Content-type': 'application/json'
+            //     },
+            //     body: JSON.stringify({
+            //         title: inputTitle,
+            //         price: parseInt(inputPrice),
+            //         desc: inputDesc,
+            //         image: inputImage,
+            //         createdAt: 'zxczxczxc',
+            //     })
+            // })
+            
         } catch (e) {
             console.log(e)
         }

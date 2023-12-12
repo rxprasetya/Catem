@@ -1,13 +1,16 @@
 // Discover
 import React, { useEffect, useRef, useState } from 'react'
-import { StyleSheet, TextInput, View, StatusBar, Text, TouchableOpacity, ScrollView, Image, Animated, FlatList } from 'react-native'
+import { StyleSheet, TextInput, View, StatusBar, Text, TouchableOpacity, ScrollView, Image, Animated, FlatList, Alert } from 'react-native'
 import { SearchNormal1, ArrowLeft2, Location, Star1 } from 'iconsax-react-native'
-import {  useNavigation, } from '@react-navigation/native'
+import { useIsFocused, useNavigation, useRoute, } from '@react-navigation/native'
+import storage from '@react-native-firebase/storage'
+import firestore from '@react-native-firebase/firestore'
 
 export default function Discover() {
 
   const navigation = useNavigation()
-  const [count, setCount] = useState(0)
+  // const route = useRoute()
+  const isFocused = useIsFocused()
 
   const ScrollY = useRef(new Animated.Value(0)).current
   const [menuData, setMenuData] = useState([])
@@ -27,33 +30,43 @@ export default function Discover() {
     // return () => {
     //   fetchData()
     // }
-  }, [count])
+    // [route.params?.isLoading]
+  }, [isFocused])
 
   // Tampil Data
   async function fetchData() {
     try {
-      const data = await fetch('https://656f45af6529ec1c6237aa2a.mockapi.io/catem/menu/')
-      const res = await data.json()
-      console.log(res);
-      setMenuData(res)
-      setCount(count+1)
+      const data = await firestore().collection('menu').get()
+      setMenuData(data.docs)
+      // console.log(data.docs[0].id);
+      // const data = await fetch('https://656f45af6529ec1c6237aa2a.mockapi.io/catem/menu/')
+      // const res = await data.json()
     } catch (e) {
       console.log(e);
     }
   }
 
+  function onConfirmDelete(id) {
+    Alert.alert('Confirm', 'Are you sure want to delete this item?', [
+      { text: 'Yes, sure', onPress: () => deleteData(id) },
+      { text: 'Nope bruh' },
+    ])
+  }
+
   async function deleteData(id) {
     try {
-      const data = await fetch('https://656f45af6529ec1c6237aa2a.mockapi.io/catem/menu/' + id, {
-        method: 'DELETE',
-        headers: {
-          'Accept': 'application/json',
-          'Content-type': 'application/json',
-        },
-      })
-      // setCount(count+1)
-      console.log(await data.json())
-      // console.log({id})
+      const data = await firestore().collection('menu').doc(id).delete()
+      const filter = menuData.filter((item) => item.id != id)
+      setMenuData(filter)
+      console.log(data)
+      // console.log(id)
+      // const data = await fetch('https://656f45af6529ec1c6237aa2a.mockapi.io/catem/menu/' + id, {
+      //   method: 'DELETE',
+      //   headers: {
+      //     'Accept': 'application/json',
+      //     'Content-type': 'application/json',
+      //   },
+      // })
     } catch (e) {
       console.log(e)
     }
@@ -102,14 +115,14 @@ export default function Discover() {
         >
           <View style={styles.recContentContainer}>
             {menuData.map((item) => (
-              <TouchableOpacity style={styles.recContent} onPress={() =>
-                navigation.navigate('EditMenu', { data: item })} 
-                onLongPress={()=>deleteData(item.id)}
-                >
-                <Image style={styles.recImage} source={{ uri: item.image }} />
-                <Text style={styles.recTitle}>{item.title}</Text>
+              <TouchableOpacity style={styles.recContent}
+                onPress={() => navigation.navigate('EditMenu', { data: item._data, id : item.id })}
+                onLongPress={() => onConfirmDelete(item.id)}
+              >
+                <Image style={styles.recImage} source={{ uri: item._data.image }} />
+                <Text style={styles.recTitle}>{item._data.title}</Text>
                 <View style={styles.recRating}>
-                  <Text style={styles.recRatingText}>Rp{item.price}</Text>
+                  <Text style={styles.recRatingText}>Rp{item._data.price}</Text>
                   <Star1 size={12} variant='Bold' color='#fcba03' style={{ marginLeft: 12, marginRight: 4, }} />
                   <Text style={styles.recRatingText}>5.0</Text>
                 </View>

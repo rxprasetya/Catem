@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "956440934164",
+    "project_id": "catemapp-fd0a8",
+    "storage_bucket": "catemapp-fd0a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:956440934164:android:52c8373bedbeec2933f401",
+        "android_client_info": {
+          "package_name": "com.catem"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8er1J9b5-zILwR6DdrHh5I5JTMcS7eiY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

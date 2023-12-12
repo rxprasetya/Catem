@@ -2,6 +2,8 @@ import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View } from 
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { ArrowLeft } from 'iconsax-react-native'
+import storage from '@react-native-firebase/storage'
+import firestore from '@react-native-firebase/firestore'
 
 const winWidht = Dimensions.get('screen').width
 const winHeight = Dimensions.get('screen').height
@@ -18,21 +20,29 @@ export default function AddMenu() {
   // Tambah Data
   async function fecthPost() {
     try {
-      const data = await fetch('https://656f45af6529ec1c6237aa2a.mockapi.io/catem/menu/', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify({
-          title: inputTitle,
-          price: parseInt(inputPrice),
-          desc: inputDesc,
-          image: inputImage,
-          createdAt: 'zxczxczxc',
-        })
+      // const data = await fetch('https://656f45af6529ec1c6237aa2a.mockapi.io/catem/menu/', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Accept': 'application/json',
+      //     'Content-type': 'application/json'
+      //   },
+      //   body: JSON.stringify({
+      //     title: inputTitle,
+      //     price: parseInt(inputPrice),
+      //     desc: inputDesc,
+      //     image: inputImage,
+      //     createdAt: 'zxczxczxc',
+      //   })
+      // })
+
+      const data = await firestore().collection('menu').add({
+        title: inputTitle,
+        price: parseInt(inputPrice),
+        desc: inputDesc,
+        image: inputImage,
       })
-      console.log(await data.json)
+
+      console.log((await data.get()).data());
       nav.navigate('Account')
     } catch (e) {
       console.log(e)
