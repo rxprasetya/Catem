@@ -4,4 +4,6 @@ import Splash from "./Splash";
 import Account from "./Account";
 import AddMenu from "./AddMenu";
 import EditMenu from "./EditMenu";
-export {Home, Discover, Splash, Account, AddMenu, EditMenu}
+import Register from "./Register";
+import Login from "./Login";
+export {Home, Discover, Splash, Account, AddMenu, EditMenu, Register, Login}

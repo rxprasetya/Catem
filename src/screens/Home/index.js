@@ -7,12 +7,10 @@ import { useNavigation } from '@react-navigation/native'
 
 const win = Dimensions.get('window')
 
-LogBox.ignoreAllLogs(true)
-
 export default function Home() {
 
-  const [choose, setChoose] = useState(1)
   const navigation = useNavigation()
+  const [choose, setChoose] = useState(1)
 
   return (
     <ScrollView style={styles.container}>

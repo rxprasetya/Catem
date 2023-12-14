@@ -1,86 +1,96 @@
 // Account
 import React from "react"
 import { View, Text, Image, ScrollView, StyleSheet, StatusBar, TouchableOpacity, } from 'react-native'
-import { DollarCircle, Coin, Personalcard, Heart, Lock, Message, MenuBoard,  } from 'iconsax-react-native'
+import { DollarCircle, Coin, Personalcard, Heart, Lock, Message, MenuBoard, } from 'iconsax-react-native'
 import profile from '../../assets/images/IMG_9865.jpg'
-import { useNavigation } from "@react-navigation/native"
+import { StackActions, useNavigation } from "@react-navigation/native"
+import auth from '@react-native-firebase/auth'
 
-export default function Account(){
+export default function Account() {
   const nav = useNavigation()
-  return(
-    <ScrollView style={ styles.container }>
+
+  async function logout() {
+    try {
+      await auth().signOut()
+      nav.dispatch(StackActions.replace('Login'))
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  return (
+    <ScrollView style={styles.container}>
       <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'}></StatusBar>
-      <View style={ styles.headerContainer }>
-        <View style={ styles.profileContainer }>
-          <Image style={ styles.profileImage } source={ profile }/>
-          <View style={ styles.profileInfo }>
-            <Text style={ styles.profileName }>RAFID ARTUR PRASETYA</Text>
-            <Text style={ styles.profileAccount }>+62 877-6506-1946</Text>
+      <View style={styles.headerContainer}>
+        <View style={styles.profileContainer}>
+          <Image style={styles.profileImage} source={profile} />
+          <View style={styles.profileInfo}>
+            <Text style={styles.profileName}>RAFID ARTUR PRASETYA</Text>
+            <Text style={styles.profileAccount}>+62 877-6506-1946</Text>
           </View>
         </View>
       </View>
-      <View style={ styles.saldoContainer }>
-        <TouchableOpacity style={ styles.saldoInfoContainer}>
-          <Text style={ styles.saldoTittle }>Balance</Text>
-          <View style={ styles.saldoInfo }>
-            <Text style={ styles.saldoText }>Rp1.000.000</Text>
-            <Image style={styles.appIcon } source={{ uri:'https://gadgetren.com/wp-content/uploads/2019/07/OVO-Logo.jpg' }}/>
+      <View style={styles.saldoContainer}>
+        <TouchableOpacity style={styles.saldoInfoContainer}>
+          <Text style={styles.saldoTittle}>Balance</Text>
+          <View style={styles.saldoInfo}>
+            <Text style={styles.saldoText}>Rp1.000.000</Text>
+            <Image style={styles.appIcon} source={{ uri: 'https://gadgetren.com/wp-content/uploads/2019/07/OVO-Logo.jpg' }} />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={ styles.saldoInfoContainer}>
-          <Text style={ styles.saldoTittle }>Top-Up</Text>
-          <View style={ styles.saldoInfo }>
-            <Text style={ styles.saldoText }>at Indomaret</Text>
+        <TouchableOpacity style={styles.saldoInfoContainer}>
+          <Text style={styles.saldoTittle}>Top-Up</Text>
+          <View style={styles.saldoInfo}>
+            <Text style={styles.saldoText}>at Indomaret</Text>
             <DollarCircle size={24} variant='Linear' color='black' />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={ styles.saldoInfoContainer}>
-          <Text style={ styles.saldoTittle }>Points</Text>
-          <View style={ styles.saldoInfo }>
-            <Text style={ styles.saldoText }>0</Text>
+        <TouchableOpacity style={styles.saldoInfoContainer}>
+          <Text style={styles.saldoTittle}>Points</Text>
+          <View style={styles.saldoInfo}>
+            <Text style={styles.saldoText}>0</Text>
             <Coin size={24} variant='Linear' color='black' />
           </View>
         </TouchableOpacity>
       </View>
-      <View style={ styles.menuContainer }>
-        <Text style={ styles.menuTitle }>Profile Setting</Text>
-        <TouchableOpacity style={ styles.menuContent }>
-          <View style={ styles.menuInfo }>
-            <Personalcard size={20} variant='Linear' color='black'/>
-            <Text style={ styles.menuText }>Info Account</Text>
+      <View style={styles.menuContainer}>
+        <Text style={styles.menuTitle}>Profile Setting</Text>
+        <TouchableOpacity style={styles.menuContent}>
+          <View style={styles.menuInfo}>
+            <Personalcard size={20} variant='Linear' color='black' />
+            <Text style={styles.menuText}>Info Account</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={ styles.menuContent }>
-          <View style={ styles.menuInfo }>
-            <Heart size={20} variant='Linear' color='black'/>
-            <Text style={ styles.menuText }>Favorites</Text>
+        <TouchableOpacity style={styles.menuContent}>
+          <View style={styles.menuInfo}>
+            <Heart size={20} variant='Linear' color='black' />
+            <Text style={styles.menuText}>Favorites</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={ styles.menuContent } onPress={()=> nav.navigate('AddMenu')}>
-          <View style={ styles.menuInfo }>
-            <MenuBoard size={20} variant='Linear' color='black'/>
-            <Text style={ styles.menuText }>Add Menu</Text>
+        <TouchableOpacity style={styles.menuContent} onPress={() => nav.navigate('AddMenu')}>
+          <View style={styles.menuInfo}>
+            <MenuBoard size={20} variant='Linear' color='black' />
+            <Text style={styles.menuText}>Add Menu</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={ styles.menuContent }>
-          <View style={ styles.menuInfo }>
-            <Lock size={20} variant='Linear' color='black'/>
-            <Text style={ styles.menuText }>Security</Text>
+        <TouchableOpacity style={styles.menuContent}>
+          <View style={styles.menuInfo}>
+            <Lock size={20} variant='Linear' color='black' />
+            <Text style={styles.menuText}>Security</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={ styles.menuContent }>
-          <View style={ styles.menuInfo }>
-            <Message size={20} variant='Linear' color='black'/>
-            <Text style={ styles.menuText }>Services & Feedback</Text>
+        <TouchableOpacity style={styles.menuContent}>
+          <View style={styles.menuInfo}>
+            <Message size={20} variant='Linear' color='black' />
+            <Text style={styles.menuText}>Services & Feedback</Text>
           </View>
         </TouchableOpacity>
       </View>
       <View style={styles.footerContainer}>
-        <Text style={ styles.footerText }>Versi 1.0.0</Text>
-        <Text style={ styles.footerText }>#CATEMinaja</Text>
+        <Text style={styles.footerText}>Versi 1.0.0</Text>
+        <Text style={styles.footerText}>#CATEMinaja</Text>
       </View>
-      <TouchableOpacity style={ styles.buttonSignOut }>
-        <Text style={ styles.buttonText }>Sign Out</Text>
+      <TouchableOpacity style={styles.buttonSignOut} onPress={logout}>
+        <Text style={styles.buttonText}>Sign Out</Text>
       </TouchableOpacity>
     </ScrollView>
   )
@@ -141,7 +151,7 @@ const styles = StyleSheet.create({
     marginTop: -12,
     borderRadius: 12,
   },
-  
+
   saldoInfoContainer: {
     backgroundColor: '#f1f2f3',
     width: 128,
@@ -175,7 +185,7 @@ const styles = StyleSheet.create({
 
   menuContainer: {
     padding: 8,
-    marginTop: 16, 
+    marginTop: 16,
     marginHorizontal: 8,
   },
 
